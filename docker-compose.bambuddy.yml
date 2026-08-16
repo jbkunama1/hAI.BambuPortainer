@@ -18,7 +18,7 @@ services:
       - PGID=${PGID:-1000}
       - PORT=8109
     healthcheck:
-      test: ["CMD", "timeout", "10s", "bash", "-c", ":> /dev/tcp/127.0.0.1/8109 || exit 1"]
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1', 8109), timeout=5).close()"]
       interval: 10s
       timeout: 5s
       retries: 3
