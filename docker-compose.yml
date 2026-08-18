@@ -5,7 +5,7 @@
 #   Bambu Studio  → ghcr.io/jbkunama1/hai.bambuportainer:latest  (eigenes Wrapper-Image)
 #   BambuBuddy    → ghcr.io/maziggy/bambuddy:latest              (Upstream)
 #
-# Deploy in Portainer: Stacks → Add stack → Repository → Compose path: docker-compose.yaml
+# Deploy in Portainer: Stacks → Add stack → Repository → Compose path: docker-compose.yml
 # ============================================================
 
 services:

@@ -142,13 +142,13 @@
 
   <section id="portainer">
     <h2>Deploy mit Portainer</h2>
-    <p class="sub">Git-Deployment: Beide Stacks liegen als <code>docker-compose.*.yml</code> in diesem Repo. Bambu Studio pullt das GHCR-Image (<code>pull_policy: always</code>), BambuBuddy das Upstream-Image.</p>
+    <p class="sub">Git-Deployment: Der kombinierte Stack liegt als <code>docker-compose.yml</code> in diesem Repo. Bambu Studio pullt das GHCR-Image (<code>pull_policy: always</code>), BambuBuddy das Upstream-Image.</p>
     <div class="install">
       <div>
         <div class="step"><b>1</b><p>In Portainer → <b>Stacks</b> → <b>+ Add stack</b> öffnen.</p></div>
         <div class="step"><b>2</b><p>Name (z.B. <code>bambustudio</code>) · Build method: <b>Repository</b>.</p></div>
         <div class="step"><b>3</b><p>Repository URL: <code>https://github.com/jbkunama1/hAI.BambuPortainer</code> · Reference: <code>refs/heads/main</code>.</p></div>
-        <div class="step"><b>4</b><p>Compose path: <code>docker-compose.bambustudio.yml</code> – für BambuBuddy: <code>docker-compose.bambuddy.yml</code>.</p></div>
+        <div class="step"><b>4</b><p>Compose path: <code>docker-compose.yml</code>.</p></div>
         <div class="step"><b>5</b><p>Environment-Variablen setzen (siehe Tabelle unten).</p></div>
         <div class="step"><b class="alt">6</b><p><b>Deploy the stack</b> – Portainer pullt das Image, kein Build auf dem Host.</p></div>
       </div>

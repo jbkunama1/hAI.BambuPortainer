@@ -6,7 +6,7 @@
 [![GitHub Forks](https://img.shields.io/github/forks/jbkunama1/hAI.BambuPortainer?style=flat-square&logo=github)](https://github.com/jbkunama1/hAI.BambuPortainer/network/members)
 [![GitHub Issues](https://img.shields.io/github/issues/jbkunama1/hAI.BambuPortainer?style=flat-square)](https://github.com/jbkunama1/hAI.BambuPortainer/issues)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg?style=flat-square)](LICENSE)
-[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker)](docker-compose.yaml)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker)](docker-compose.yml)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-success?style=flat-square&logo=github)](https://jbkunama1.github.io/hAI.BambuPortainer/)
 [![GHCR Image](https://img.shields.io/badge/GHCR-hai.bambuportainer-2496ED?style=flat-square&logo=docker)](https://github.com/jbkunama1/hAI.BambuPortainer/pkgs/container/hai.bambuportainer)
 [![Bambu Studio](https://img.shields.io/badge/Bambu%20Studio-linuxserver-00e5a0?style=flat-square&logo=linuxserver)](https://github.com/linuxserver/docker-bambustudio)
@@ -70,7 +70,7 @@ Das Bambu-Studio-Image wird von GitHub Actions gebaut (`.github/workflows/docker
 3. Build method: **Repository**
 4. Repository URL: `https://github.com/jbkunama1/hAI.BambuPortainer`
 5. Repository reference: `refs/heads/main`
-6. Compose path: `docker-compose.yaml`
+6. Compose path: `docker-compose.yml`
 7. **Environment variables** setzen (siehe unten)
 8. **Deploy the stack** – Portainer pullt beide vorgebauten Images von GHCR (`pull_policy: always`), kein Build auf dem Host. Das Netzwerk `highfishNetwork` wird automatisch mit angelegt.
 
@@ -104,7 +104,7 @@ Falls du eine `.env`-Datei nutzen möchtest: Kopiere `.env.example` und fülle d
 ```
 hAI.BambuPortainer/
 ├── Dockerfile                      ← Wrapper-Image (Bambu Studio, linuxserver-Base)
-├── docker-compose.yaml             ← Portainer Stack (Standard): Bambu Studio + BambuBuddy in EINEM Stack
+├── docker-compose.yml              ← Portainer Stack (Standard): Bambu Studio + BambuBuddy in EINEM Stack
 ├── .env.example                    ← Vorlage für Umgebungsvariablen
 ├── .github/workflows/
 │   ├── docker-build.yml            ← baut & pusht Bambu-Studio-Image auf ghcr.io
