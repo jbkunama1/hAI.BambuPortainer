@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="hAI.BambuPortainer – Portainer Stacks für Bambu Studio (Web-Slicer) und BambuBuddy (Drucker-Monitoring). Deploy auf deiner NAS aus GHCR.">
-  <title>hAI.BambuPortainer – Bambu 3D-Drucker als Portainer Stacks</title>
+  <meta name="description" content="Portainer Stacks für Bambu Studio (Web-Slicer) und BambuBuddy (Drucker-Monitoring) für deinen 3D-Drucker auf deiner NAS. Deploy direkt aus GitHub.">
+  <title>hAI.BambuPortainer – Portainer Stacks für deinen 3D-Drucker!</title>
   <style>
     :root{
       --accent:#00e5a0; --bg:#080c10; --card:rgba(255,255,255,.04); --border:rgba(255,255,255,.09);
@@ -91,7 +91,7 @@
     <div>
       <span class="pill">3D-Druck · Web-Slicer · Monitoring · Portainer Stack</span>
       <h1>Dein Bambu-Drucker – <span>komplett</span> im Browser</h1>
-      <p class="lead">hAI.BambuPortainer deployt <a href="https://github.com/linuxserver/docker-bambustudio" target="_blank" rel="noopener">Bambu Studio</a> als Web-Slicer und <a href="https://github.com/maziggy/bambuddy" target="_blank" rel="noopener">BambuBuddy</a> als Monitoring auf deiner NAS – direkt aus GitHub in Portainer.</p>
+      <p class="lead">Portainer Stacks für deinen 3D-Drucker! 🖨️ Von deiner NAS aus: <a href="https://github.com/linuxserver/docker-bambustudio" target="_blank" rel="noopener">Bambu Studio</a> als Web-Slicer im Browser + <a href="https://github.com/maziggy/bambuddy" target="_blank" rel="noopener">BambuBuddy</a> als Drucker-Monitoring/Dashboard. Beide Container laufen im <code>highfishNetwork</code>, deployt direkt aus GitHub in Portainer – kein manuelles Clonen nötig.</p>
       <div class="cta">
         <a class="btn btn-primary" href="#portainer">🚀 Deployen</a>
         <a class="btn btn-ghost" href="https://github.com/jbkunama1/hAI.BambuPortainer" target="_blank" rel="noopener">GitHub Repo →</a>
@@ -107,20 +107,20 @@
 
   <section id="features">
     <h2>Was du bekommst</h2>
-    <p class="sub">Zwei fertige Portainer Stacks – das Bambu-Studio-Image baut GitHub Actions automatisch und pusht es auf GHCR, BambuBuddy kommt direkt vom Upstream.</p>
+    <p class="sub">Dieses Repo liefert fertige Portainer Stacks (Git-Deployment) für deine Bambu-3D-Drucker-Infrastruktur.</p>
     <div class="grid">
-      <div class="card"><div class="icon">🎛️</div><h3>Bambu Studio Web</h3><p>Slicing-Software als Web-App im Browser – kein Client-Install, läuft auf deiner NAS.</p></div>
-      <div class="card"><div class="icon">📊</div><h3>BambuBuddy</h3><p>Monitoring, Dashboard &amp; Druckerverwaltung – direkt vom Upstream-Image.</p></div>
-      <div class="card"><div class="icon">🔐</div><h3>Basic Auth</h3><p>Bambu Studio schützt das Web-Interface mit eigenem Benutzer + Passwort.</p></div>
-      <div class="card"><div class="icon">🔁</div><h3>Git-Deploy</h3><p>Portainer pullt das vorgebaute GHCR-Image – kein Build auf dem Host.</p></div>
+      <div class="card"><div class="icon">🎛️</div><h3>Bambu Studio Web</h3><p>Slicing-Software als <strong>Web-App</strong> im Browser (kein Client-Install nötig) – eigenes GHCR-Image.</p></div>
+      <div class="card"><div class="icon">📊</div><h3>BambuBuddy</h3><p>Monitoring &amp; Dashboard für deinen Bambu-Drucker – direkt vom Upstream-Image.</p></div>
+      <div class="card"><div class="icon">🔐</div><h3>Basic Auth</h3><p>Bambu Studio schützt das Web-Interface mit eigenem Benutzer + Passwort (<code>CUSTOM_USER</code> / <code>CUSTOM_PASSWORD</code>).</p></div>
+      <div class="card"><div class="icon">🔁</div><h3>Git-Deployment</h3><p>Portainer pullt vorgebaute GHCR-Images – kein Build auf dem Host.</p></div>
       <div class="card"><div class="icon">🌐</div><h3>LAN-Web-Zugriff</h3><p>Bequem aus dem Heimnetz slicen und drucken.</p></div>
-      <div class="card"><div class="icon">🖨️</div><h3>Printer-Link</h3><p>Drucker direkt im lokalen Netzwerk anbinden – Bambu Cloud optional.</p></div>
+      <div class="card"><div class="icon">🖨️</div><h3>Printer-Konnektivität</h3><p>Drucker direkt im lokalen Netzwerk anbinden – Bambu Cloud optional.</p></div>
     </div>
   </section>
 
   <section id="studio">
     <h2>🎛️ Bambu Studio – Web-Slicer</h2>
-    <p class="sub">Eigenes Wrapper-Image <code>ghcr.io/jbkunama1/hai.bambuportainer</code> auf Basis von <a href="https://github.com/linuxserver/docker-bambustudio" target="_blank" rel="noopener">LinuxServer.io</a> – gebaut per GitHub Actions bei jedem Push. <b>Nur x86-64 (amd64)</b>, kein ARM.</p>
+    <p class="sub">Eigenes Wrapper-Image <code>ghcr.io/jbkunama1/hai.bambuportainer</code> auf Basis von <a href="https://github.com/linuxserver/docker-bambustudio" target="_blank" rel="noopener">LinuxServer.io</a> – gebaut per GitHub Actions bei jedem Push auf <code>main</code>. <b>Nur x86-64 (amd64)</b>, kein ARM!</p>
     <div class="grid">
       <div class="card"><div class="icon">🖥️</div><h3>Web-UI</h3><p>Ports <code>3000</code> (HTTP) / <code>3001</code> (HTTPS) + WebSocket <code>8082</code>.</p></div>
       <div class="card"><div class="icon">🔐</div><h3>Login schützen</h3><p><code>CUSTOM_USER</code> / <code>CUSTOM_PASSWORD</code> – Default unbedingt ändern!</p></div>
@@ -131,7 +131,7 @@
 
   <section id="buddy">
     <h2>📊 BambuBuddy – Monitoring</h2>
-    <p class="sub">1:1-Deployment des offiziellen Stacks von <a href="https://github.com/maziggy/bambuddy" target="_blank" rel="noopener">maziggy/bambuddy</a> („nimm das alles so“) – inkl. Healthcheck, Netzwerk &amp; Volumes.</p>
+    <p class="sub">1:1-Deployment des offiziellen Stacks von <a href="https://github.com/maziggy/bambuddy" target="_blank" rel="noopener">maziggy/bambuddy</a> – inkl. Healthcheck, Netzwerk &amp; Volumes. Deployt direkt aus GitHub in Portainer.</p>
     <div class="grid">
       <div class="card"><div class="icon">📡</div><h3>Drucker-Status</h3><p>Live-Monitoring deines Bambu-Druckers auf Port <code>8060</code>.</p></div>
       <div class="card"><div class="icon">🧠</div><h3>Env wie gehabt</h3><p><code>PORT=8109</code>, <code>PUID/PGID=1000</code>, <code>TZ=Europe/Berlin</code>.</p></div>
@@ -146,17 +146,17 @@
     <div class="install">
       <div>
         <div class="step"><b>1</b><p>In Portainer → <b>Stacks</b> → <b>+ Add stack</b> öffnen.</p></div>
-        <div class="step"><b>2</b><p>Name (z.B. <code>bambustudio</code>) · Build method: <b>Repository</b>.</p></div>
+        <div class="step"><b>2</b><p>Name (z.B. <code>bambu3d</code>) · Build method: <b>Repository</b>.</p></div>
         <div class="step"><b>3</b><p>Repository URL: <code>https://github.com/jbkunama1/hAI.BambuPortainer</code> · Reference: <code>refs/heads/main</code>.</p></div>
         <div class="step"><b>4</b><p>Compose path: <code>docker-compose.yml</code>.</p></div>
         <div class="step"><b>5</b><p>Environment-Variablen setzen (siehe Tabelle unten).</p></div>
-        <div class="step"><b class="alt">6</b><p><b>Deploy the stack</b> – Portainer pullt das Image, kein Build auf dem Host.</p></div>
+        <div class="step"><b class="alt">6</b><p><b>Deploy the stack</b> – Portainer pullt beide vorgebauten Images von GHCR (<code>pull_policy: always</code>), kein Build auf dem Host. Das Netzwerk <code>highfishNetwork</code> wird automatisch mit angelegt.</p></div>
       </div>
       <div>
         <p style="color:var(--muted);font-size:.9rem;margin-bottom:10px"><b style="color:var(--text)">Voraussetzungen</b></p>
         <div class="card" style="margin-bottom:12px"><p>✅ Portainer CE/Business ≥ 2.x</p></div>
         <div class="card" style="margin-bottom:12px"><p>🌐 Internet-Zugriff vom Docker-Host</p></div>
-        <div class="card" style="margin-bottom:12px"><p>🔗 Docker-Netzwerk <code>highfishNetwork</code> einmalig anlegen (Networks → Add network).</p></div>
+        <div class="card" style="margin-bottom:12px"><p>🔗 Docker-Netzwerk <code>highfishNetwork</code> wird automatisch mit angelegt (kein manuelles Erstellen nötig).</p></div>
         <div class="card"><p>🔓 Einmalig: GHCR-Paket <code>hai.bambuportainer</code> auf <b>public</b> setzen (Repo → Packages → Change visibility), sonst braucht Portainer Login-Credentials.</p></div>
       </div>
     </div>
@@ -172,7 +172,7 @@
         <tr><td><code>BAMBU_HTTPS_PORT</code></td><td>Externer HTTPS-Port (Bambu Studio). Default: <code>3001</code></td></tr>
         <tr><td><code>BAMBU_WS_PORT</code></td><td>Externer WebSocket-Port (Bambu Studio). Default: <code>8082</code></td></tr>
         <tr><td><code>CUSTOM_USER</code> / <code>CUSTOM_PASSWORD</code></td><td>Basic-Auth-Zugang für Bambu Studio. Default <code>abc/abc</code> – unbedingt ändern!</td></tr>
-        <tr><td><code>DARK_MODE</code></td><td>Dark Mode für Bambu Studio (<code>true</code>/<code>false</code>). Default: <code>false</code></td></tr>
+        <tr><td><code>DARK_MODE</code></td><td>Dark Mode für Bambu Studio (<code>true</code>/<code>false</code>). Default: <code>true</code></td></tr>
         <tr><td><code>BAMBU_BUDDY_PORT</code></td><td>Externer Port für BambuBuddy (Container-Port ist 8109). Default: <code>8060</code></td></tr>
         <tr><td><code>PUID</code> / <code>PGID</code></td><td>Benutzer-/Gruppen-ID für Dateiberechtigungen. Default: <code>1000</code></td></tr>
         <tr><td><code>TZ</code></td><td>Zeitzone, z.B. <code>Europe/Berlin</code></td></tr>
