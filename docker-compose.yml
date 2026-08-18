@@ -1,37 +1,14 @@
 # ============================================================
-# hAI.BambuPortainer – Kombinierter Stack (Standard)
-# Beide Services laufen in EINEM Stack, Images kommen von GHCR.
+# hAI.BambuPortainer – BambuBuddy Only
+# Einzel-Container für: G-Code hochladen & an Drucker senden
 #
-#   Bambu Studio  → ghcr.io/jbkunama1/hai.bambuportainer:latest  (eigenes Wrapper-Image)
-#   BambuBuddy    → ghcr.io/maziggy/bambuddy:latest              (Upstream)
+#   BambuBuddy → ghcr.io/maziggy/bambuddy:latest
 #
 # Deploy in Portainer: Stacks → Add stack → Repository → Compose path: docker-compose.yml
+# Zugriff: http://<host>:8060
 # ============================================================
 
 services:
-  bambustudio:
-    image: ghcr.io/jbkunama1/hai.bambuportainer:latest
-    container_name: bambustudio
-    hostname: bambustudio
-    pull_policy: always
-    networks:
-      - highfishNetwork
-    ports:
-      - "${BAMBU_HTTP_PORT:-3000}:3000"   # HTTP
-      - "${BAMBU_HTTPS_PORT:-3001}:3001"  # HTTPS
-      - "${BAMBU_WS_PORT:-8082}:8082"     # WebSocket
-    volumes:
-      - bambustudio_config:/config
-    environment:
-      - PUID=${PUID:-1000}
-      - PGID=${PGID:-1000}
-      - TZ=${TZ:-Europe/Berlin}
-      - DARK_MODE=${DARK_MODE:-true}
-      - CUSTOM_USER=${CUSTOM_USER:-abc}
-      - CUSTOM_PASSWORD=${CUSTOM_PASSWORD:-abc}
-    shm_size: "1gb"
-    restart: unless-stopped
-
   bambuddy:
     image: ghcr.io/maziggy/bambuddy:latest
     container_name: bambuddy
@@ -40,7 +17,7 @@ services:
     networks:
       - highfishNetwork
     ports:
-      - "${BAMBU_BUDDY_PORT:-8060}:8109"
+      - "8060:8109"
     volumes:
       - bambuddy_data:/app/data
       - bambuddy_logs:/app/logs
@@ -61,13 +38,11 @@ services:
     restart: unless-stopped
     stop_grace_period: 30s
 
-# Das Netzwerk wird direkt im Stack angelegt – kein manueller Schritt nötig.
 networks:
   highfishNetwork:
     driver: bridge
 
 volumes:
-  bambustudio_config:
   bambuddy_data:
   bambuddy_logs:
   bambuddy_virtual_printer:

@@ -8,24 +8,19 @@
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg?style=flat-square)](LICENSE)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker)](docker-compose.yml)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-success?style=flat-square&logo=github)](https://jbkunama1.github.io/hAI.BambuPortainer/)
-[![GHCR Image](https://img.shields.io/badge/GHCR-hai.bambuportainer-2496ED?style=flat-square&logo=docker)](https://github.com/jbkunama1/hAI.BambuPortainer/pkgs/container/hai.bambuportainer)
-[![Bambu Studio](https://img.shields.io/badge/Bambu%20Studio-linuxserver-00e5a0?style=flat-square&logo=linuxserver)](https://github.com/linuxserver/docker-bambustudio)
 [![BambuBuddy](https://img.shields.io/badge/BambuBuddy-maziggy-orange?style=flat-square&logo=github)](https://github.com/maziggy/bambuddy)
 
-> **Portainer Stacks** für deinen 3D-Drucker! 🖨️ Von deiner **NAS** aus: [Bambu Studio](https://github.com/linuxserver/docker-bambustudio) als Web-Slicer im Browser + [BambuBuddy](https://github.com/maziggy/bambuddy) als Drucker-Monitoring/Dashboard. Beide Container laufen im `highfishNetwork`, deployt direkt aus GitHub in Portainer – kein manuelles Clonen nötig.
+> **Portainer Stack** für deinen Bambu 3D-Drucker! 🖨️ **Ein Container, ein Port.** [BambuBuddy](https://github.com/maziggy/bambuddy) als Dashboard – G-Code hochladen und fertige Drucke direkt an den Drucker senden. Deployed direkt aus GitHub in Portainer – kein manuelles Clonen nötig.
 
 ---
 
 ## 🧩 Was ist das?
 
-Dieses Repo liefert fertige **Portainer Stacks** (Git-Deployment) für deine Bambu-3D-Drucker-Infrastruktur:
+Dieses Repo liefert **einen einzigen Portainer Stack** – nur **BambuBuddy**. Du slicst woanders (Bambu Studio Desktop, OrcaSlicer, …) und sendest die fertigen G-Code-Dateien über das Dashboard an deinen Drucker.
 
 | Container | Zweck | Image-Quelle |
 |---|---|---|
-| 🎛️ **Bambu Studio** | Slicing-Software als **Web-App** im Browser (kein Client-Install nötig) | eigenes GHCR-Image `ghcr.io/jbkunama1/hai.bambuportainer` |
-| 📊 **BambuBuddy** | Monitoring & Dashboard für deinen Bambu-Drucker | Upstream-Image `ghcr.io/maziggy/bambuddy` („nimm das alles so") |
-
-Ein GitHub Actions Workflow baut das Bambu-Studio-**Wrapper-Image** bei jedem Push auf `main` aus dem [LinuxServer.io-Base](https://github.com/linuxserver/docker-bambustudio) und pusht es auf `ghcr.io/jbkunama1/hai.bambuportainer` – Portainer holt nur noch das fertige Image. BambuBuddy wird direkt vom Upstream bezogen.
+| 📊 **BambuBuddy** | Dashboard: Drucker-Monitoring, G-Code hochladen & an Drucker senden | Upstream-Image `ghcr.io/maziggy/bambuddy` |
 
 ---
 
@@ -34,47 +29,37 @@ Ein GitHub Actions Workflow baut das Bambu-Studio-**Wrapper-Image** bei jedem Pu
 ```mermaid
 flowchart LR
   subgraph NAS[🖥️ Deine NAS / Server]
-    subgraph Portainer[🐳 Portainer Stacks]
-      BS[Bambu Studio<br/>Web-Slicer :3000/:3001] --> GHCR1[(ghcr.io<br/>jbkunama1/hai.bambuportainer)]
-      BB[BambuBuddy<br/>Monitoring :8060] --> GHCR2[(ghcr.io<br/>maziggy/bambuddy)]
-      BS <--> NET[(highfishNetwork)]
-      BB <--> NET
+    subgraph Portainer[🐳 Portainer Stack]
+      BB[BambuBuddy<br/>Dashboard :8060]
     end
   end
-  subgraph GH[GitHub]
-    W1[Workflow docker-build.yml] --> GHCR1
-  end
-  BROWSER[🌐 Browser im LAN] -->|HTTP/HTTPS| BS
-  BROWSER --> BB
-  BS -->|LAN/WLAN| PRINTER[🖨️ Bambu Printer]
-  BB -->|LAN/WLAN| PRINTER
+  BROWSER[🌐 Browser im LAN] --> BB
+  BB -->|LAN/WLAN| PRINTER[🖨️ Bambu Printer]
 ```
 
 ---
 
 ## 🚀 Portainer Deploy
 
-Das Bambu-Studio-Image wird von GitHub Actions gebaut (`.github/workflows/docker-build.yml`, bei jedem Push/Commit) und auf `ghcr.io/jbkunama1/hai.bambuportainer` gepusht. BambuBuddy wird direkt vom Upstream `ghcr.io/maziggy/bambuddy` bezogen.
-
-**Manuell anstoßen:** GitHub → Repo → **Actions** → **Build & Push Docker Image to GHCR** → **Run workflow**.
+BambuBuddy wird direkt vom Upstream `ghcr.io/maziggy/bambuddy` bezogen – kein Image-Build nötig.
 
 ### Voraussetzungen
 - Portainer Business oder CE ≥ 2.x
 - Zugriff auf das Internet vom Docker-Host aus
-- **Einmalig:** GHCR-Paket `hai.bambuportainer` als **public** setzen (GitHub → Repo → **Packages** → `hai.bambuportainer` → **Package settings** → **Change visibility** → Public), sonst braucht Portainer Login-Credentials.
 
-### Schritte: Kompletter Stack (Bambu Studio + BambuBuddy in EINEM Stack)
+### Schritte
 
 1. In Portainer → **Stacks** → **+ Add stack**
-2. Name: z. B. `bambu3d`
+2. Name: z. B. `bambubuddy`
 3. Build method: **Repository**
 4. Repository URL: `https://github.com/jbkunama1/hAI.BambuPortainer`
 5. Repository reference: `refs/heads/main`
 6. Compose path: `docker-compose.yml`
-7. **Environment variables** setzen (siehe unten)
-8. **Deploy the stack** – Portainer pullt beide vorgebauten Images von GHCR (`pull_policy: always`), kein Build auf dem Host. Das Netzwerk `highfishNetwork` wird automatisch mit angelegt.
+7. **Deploy the stack** – Portainer pullt das Image von GHCR (`pull_policy: always`), kein Build auf dem Host. Das Netzwerk wird automatisch mit angelegt.
 
 Danach im BambuBuddy-Dashboard unter **Settings** deinen Drucker (IP + Access Code) hinterlegen.
+
+Zugriff: `http://<host>:8060`
 
 ---
 
@@ -82,20 +67,12 @@ Danach im BambuBuddy-Dashboard unter **Settings** deinen Drucker (IP + Access Co
 
 | Variable | Beschreibung | Beispiel |
 |---|---|---|
-| `BAMBU_HTTP_PORT` | Externer Port (HTTP) für Bambu Studio | `3000` |
-| `BAMBU_HTTPS_PORT` | Externer Port (HTTPS) für Bambu Studio | `3001` |
-| `BAMBU_WS_PORT` | Externer Port für den Bambu Studio WebSocket | `8082` |
-| `BAMBU_BUDDY_PORT` | Externer Port für das BambuBuddy Web-UI (Container-Port ist 8109) | `8060` |
+| `BAMBU_BUDDY_PORT` | Externer Port (Container-Port ist 8109) | `8060` |
 | `PUID` | Benutzer-ID (Standard 1000) | `1000` |
 | `PGID` | Gruppen-ID (Standard 1000) | `1000` |
 | `TZ` | Zeitzone | `Europe/Berlin` |
-| `DARK_MODE` | Dark Mode für Bambu Studio aktivieren (`true`/`false`) | `true` |
-| `CUSTOM_USER` | Basic-Auth-Benutzername (**ändern!**) | `abc` |
-| `CUSTOM_PASSWORD` | Basic-Auth-Passwort (**unbedingt ändern!**) | `abc` |
 
 Falls du eine `.env`-Datei nutzen möchtest: Kopiere `.env.example` und fülle die Werte aus.
-
-> ⚠️ **Sicherheit:** Die Defaults `abc`/`abc` für Basic Auth sind nur zum Start gedacht – **ändere unbedingt** `CUSTOM_USER` und `CUSTOM_PASSWORD`, bevor du den Container aus dem LAN erreichbar machst!
 
 ---
 
@@ -103,13 +80,10 @@ Falls du eine `.env`-Datei nutzen möchtest: Kopiere `.env.example` und fülle d
 
 ```
 hAI.BambuPortainer/
-├── Dockerfile                      ← Wrapper-Image (Bambu Studio, linuxserver-Base)
-├── docker-compose.yml              ← Portainer Stack (Standard): Bambu Studio + BambuBuddy in EINEM Stack
+├── docker-compose.yml              ← Ein Portainer-Stack (nur BambuBuddy)
 ├── .env.example                    ← Vorlage für Umgebungsvariablen
 ├── .github/workflows/
-│   ├── docker-build.yml            ← baut & pusht Bambu-Studio-Image auf ghcr.io
 │   ├── trufflehog.yml              ← täglicher Secret-Scan
-│   ├── testdriver.yml              ← CI-Validierung für Pull Requests
 │   └── gh-pages.yml                ← deployt index.html auf GitHub Pages
 ├── index.html                      ← Landingpage (GitHub Pages)
 └── README.md
@@ -119,11 +93,9 @@ hAI.BambuPortainer/
 
 ## ℹ️ Hinweise & Limits
 
-- **Bambu Studio im Container ist nur für x86-64 (amd64) verfügbar** – kein ARM / Raspberry Pi! 🐧
-- Das Image basiert auf [LinuxServer.io](https://github.com/linuxserver/docker-bambustudio) und benötigt `--shm-size="1gb"` für stabile Performance (ist in der Compose gesetzt).
-- Das Web-Interface braucht einen **modernen Browser** (Chrome/Firefox/Edge).
 - Für die Printer-Konnektivität muss dein NAS den Drucker im **lokalen Netzwerk** erreichen (Bambu Cloud optional).
-- BambuBuddy ist unabhängig vom GHCR-Workflow – ein Update holst du dir einfach per **Stack → Duplicate/Edit → Redeploy** (neues `latest`).
+- Ein Update holst du dir einfach per **Stack → Duplicate/Edit → Redeploy** (neues `latest`).
+- Das Slicen selbst passiert außerhalb (Desktop-Slicer) – dieses Setup sendet **fertige G-Code-Dateien** an den Drucker.
 
 ---
 
@@ -131,10 +103,7 @@ hAI.BambuPortainer/
 
 | Container | Upstream | Lizenz |
 |---|---|---|
-| Bambu Studio | [linuxserver/docker-bambustudio](https://github.com/linuxserver/docker-bambustudio) | [GPL-3.0](https://github.com/linuxserver/docker-bambustudio/blob/master/LICENSE) |
 | BambuBuddy | [maziggy/bambuddy](https://github.com/maziggy/bambuddy) | [AGPL-3.0](https://github.com/maziggy/bambuddy/blob/main/LICENSE) |
-
-Dieses Repo baut das Bambu-Studio-Image als **Wrapper** aus dem LinuxServer-Base und pusht es nach `ghcr.io/jbkunama1/hai.bambuportainer`. BambuBuddy wird direkt als fertiges Upstream-Image verwendet – der Portainer Stack ist eine 1:1-Deployment-Kopie des offiziellen Stacks.
 
 ---
 
