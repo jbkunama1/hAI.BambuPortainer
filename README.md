@@ -130,6 +130,7 @@ hAI.BambuPortainer/
 ├── .github/workflows/
 │   ├── docker-build.yml            ← baut & pusht Bambu-Studio-Image auf ghcr.io
 │   ├── trufflehog.yml              ← täglicher Secret-Scan
+│   ├── testdriver.yml              ← CI-Validierung für Pull Requests
 │   └── gh-pages.yml                ← deployt index.html auf GitHub Pages
 ├── index.html                      ← Landingpage (GitHub Pages)
 └── README.md
