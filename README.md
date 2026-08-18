@@ -6,7 +6,7 @@
 [![GitHub Forks](https://img.shields.io/github/forks/jbkunama1/hAI.BambuPortainer?style=flat-square&logo=github)](https://github.com/jbkunama1/hAI.BambuPortainer/network/members)
 [![GitHub Issues](https://img.shields.io/github/issues/jbkunama1/hAI.BambuPortainer?style=flat-square)](https://github.com/jbkunama1/hAI.BambuPortainer/issues)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg?style=flat-square)](LICENSE)
-[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker)](docker-compose.bambustudio.yml)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker)](docker-compose.yaml)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-success?style=flat-square&logo=github)](https://jbkunama1.github.io/hAI.BambuPortainer/)
 [![GHCR Image](https://img.shields.io/badge/GHCR-hai.bambuportainer-2496ED?style=flat-square&logo=docker)](https://github.com/jbkunama1/hAI.BambuPortainer/pkgs/container/hai.bambuportainer)
 [![Bambu Studio](https://img.shields.io/badge/Bambu%20Studio-linuxserver-00e5a0?style=flat-square&logo=linuxserver)](https://github.com/linuxserver/docker-bambustudio)
@@ -61,57 +61,37 @@ Das Bambu-Studio-Image wird von GitHub Actions gebaut (`.github/workflows/docker
 ### Voraussetzungen
 - Portainer Business oder CE ≥ 2.x
 - Zugriff auf das Internet vom Docker-Host aus
-- Docker-Netzwerk **`highfishNetwork`** anlegen (einmalig): Portainer → **Networks** → **Add network** → Name `highfishNetwork` → Driver `bridge`
 - **Einmalig:** GHCR-Paket `hai.bambuportainer` als **public** setzen (GitHub → Repo → **Packages** → `hai.bambuportainer` → **Package settings** → **Change visibility** → Public), sonst braucht Portainer Login-Credentials.
 
-### Schritte: Bambu Studio (Web-Slicer)
+### Schritte: Kompletter Stack (Bambu Studio + BambuBuddy in EINEM Stack)
 
 1. In Portainer → **Stacks** → **+ Add stack**
-2. Name: `bambustudio`
+2. Name: z. B. `bambu3d`
 3. Build method: **Repository**
 4. Repository URL: `https://github.com/jbkunama1/hAI.BambuPortainer`
 5. Repository reference: `refs/heads/main`
-6. Compose path: `docker-compose.bambustudio.yml`
+6. Compose path: `docker-compose.yaml`
 7. **Environment variables** setzen (siehe unten)
-8. **Deploy the stack** – Portainer pullt das vorgebaute Image (`pull_policy: always`), kein Build auf dem Host.
+8. **Deploy the stack** – Portainer pullt beide vorgebauten Images von GHCR (`pull_policy: always`), kein Build auf dem Host. Das Netzwerk `highfishNetwork` wird automatisch mit angelegt.
 
-### Schritte: BambuBuddy (Monitoring)
-
-1. In Portainer → **Stacks** → **+ Add stack**
-2. Name: `bambuddy`
-3. Build method: **Repository**
-4. Repository URL: `https://github.com/jbkunama1/hAI.BambuPortainer`
-5. Repository reference: `refs/heads/main`
-6. Compose path: `docker-compose.bambuddy.yml`
-7. **Deploy the stack**
-8. Danach im BambuBuddy-Dashboard unter **Settings** deinen Drucker (IP + Access Code) hinterlegen.
+Danach im BambuBuddy-Dashboard unter **Settings** deinen Drucker (IP + Access Code) hinterlegen.
 
 ---
 
 ## 🔧 Environment Variables
 
-### Bambu Studio
-
 | Variable | Beschreibung | Beispiel |
 |---|---|---|
-| `BAMBU_HTTP_PORT` | Externer Port (HTTP) für das Web-Interface | `3000` |
-| `BAMBU_HTTPS_PORT` | Externer Port (HTTPS) für das Web-Interface | `3001` |
-| `BAMBU_WS_PORT` | Externer Port für den WebSocket | `8082` |
+| `BAMBU_HTTP_PORT` | Externer Port (HTTP) für Bambu Studio | `3000` |
+| `BAMBU_HTTPS_PORT` | Externer Port (HTTPS) für Bambu Studio | `3001` |
+| `BAMBU_WS_PORT` | Externer Port für den Bambu Studio WebSocket | `8082` |
+| `BAMBU_BUDDY_PORT` | Externer Port für das BambuBuddy Web-UI (Container-Port ist 8109) | `8060` |
 | `PUID` | Benutzer-ID (Standard 1000) | `1000` |
 | `PGID` | Gruppen-ID (Standard 1000) | `1000` |
 | `TZ` | Zeitzone | `Europe/Berlin` |
-| `DARK_MODE` | Dark Mode aktivieren (`true`/`false`) | `true` |
+| `DARK_MODE` | Dark Mode für Bambu Studio aktivieren (`true`/`false`) | `true` |
 | `CUSTOM_USER` | Basic-Auth-Benutzername (**ändern!**) | `abc` |
 | `CUSTOM_PASSWORD` | Basic-Auth-Passwort (**unbedingt ändern!**) | `abc` |
-
-### BambuBuddy
-
-| Variable | Beschreibung | Beispiel |
-|---|---|---|
-| `BAMBU_BUDDY_PORT` | Externer Port für das BambuBuddy Web-UI (Container-Port ist 8109) | `8060` |
-| `PUID` | Benutzer-ID | `1000` |
-| `PGID` | Gruppen-ID | `1000` |
-| `TZ` | Zeitzone | `Europe/Berlin` |
 
 Falls du eine `.env`-Datei nutzen möchtest: Kopiere `.env.example` und fülle die Werte aus.
 
@@ -124,8 +104,7 @@ Falls du eine `.env`-Datei nutzen möchtest: Kopiere `.env.example` und fülle d
 ```
 hAI.BambuPortainer/
 ├── Dockerfile                      ← Wrapper-Image (Bambu Studio, linuxserver-Base)
-├── docker-compose.bambustudio.yml  ← Portainer Stack: Bambu Studio (GHCR-Pull)
-├── docker-compose.bambuddy.yml     ← Portainer Stack: BambuBuddy (GHCR-Pull)
+├── docker-compose.yaml             ← Portainer Stack (Standard): Bambu Studio + BambuBuddy in EINEM Stack
 ├── .env.example                    ← Vorlage für Umgebungsvariablen
 ├── .github/workflows/
 │   ├── docker-build.yml            ← baut & pusht Bambu-Studio-Image auf ghcr.io
