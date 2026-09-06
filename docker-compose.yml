@@ -39,8 +39,11 @@ services:
     stop_grace_period: 30s
 
 networks:
+  # Externes Netzwerk: muss auf dem Host bereits existieren
+  # (docker network create highfishNetwork) – der Stack legt
+  # kein eigenes <stackname>_highfishNetwork mehr an.
   highfishNetwork:
-    driver: bridge
+    external: true
 
 volumes:
   bambuddy_data:
